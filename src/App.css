@@ -7,5 +7,12 @@
   justify-content: center;
 }
 
+.logoDisplay {
+  display: flex;
+  align-items: center;
+}
 
-
+.detectDisplay {
+  display: flex;
+  flex-direction: column;
+}

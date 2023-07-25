@@ -10,3 +10,9 @@ body {
 button {
   cursor: pointer;
 }
+
+
+.image {
+  width: 400px;
+  height: 400px;
+}
