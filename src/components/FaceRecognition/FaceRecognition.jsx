@@ -5,8 +5,8 @@ const FaceRecognition = ({ urlImage, clarifaiOutputs }) => {
     console.log(clarifaiOutputs)
     return(
         <div className='center na'>
-            <div className='absolute mt2'>
-                <img src={urlImage} alt="url image" width="500px" height="auto" />
+            <div className='mt2'>
+                <img src={urlImage} alt="url image" className='image' />
             </div>
         </div>
     )

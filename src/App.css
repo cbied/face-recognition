@@ -7,12 +7,19 @@
   justify-content: center;
 }
 
-.logoDisplay {
+.interfaceDisplay {
   display: flex;
+  justify-content: center;
   align-items: center;
 }
 
-.detectDisplay {
+.logoDisplay {
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 30%;
+}
+
+.formDisplay {
+  width: 50%;
 }

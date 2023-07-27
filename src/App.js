@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import ParticlesBg from 'particles-bg'
 import Navigation from './components/Navigation/Navigation';
-import Logo from './components/Logo/Logo';
 import Rank from './components/Rank/Rank';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
+import FaceRecognitionDummy from './components/FaceRecognition/FaceRecognitionDummy';
+import privateInfo from './environment';
 import './App.css';
-import privateInfo from './enviorment';
 
 const clarifaiRequestOptions = (imageURL) => {
   // PAT (property access token) lives in .env.local
@@ -71,21 +71,29 @@ class App extends Component {
     .then(result => {
       console.log(result.outputs[0].data.regions[0].region_info.bounding_box)
       this.setState({clarifaiOutputs: result});
-      this.myRef.current.scrollIntoView()
+      this.render()
     })
     .catch(error => console.log('error', error));
   }
 
+
   render() {
     return (
       <div className="App">
-        <ParticlesBg type="cobweb" bg={true} />
+        <ParticlesBg type="cobweb" bg={true} color='#7ca4f4' num='250'/>
         <Navigation />
-        <div className='logoDisplay'>
-          <div>
-            <Logo />
+        <div className='interfaceDisplay'>
+          <div className='logoDisplay'>
+            { 
+            this.IMAGE_URL.includes('.jpg' || 'jpeg' || '.png' || '.pdf') ? 
+            <FaceRecognition 
+            urlImage={this.state.input}
+            clarifaiOutputs={this.state.clarifaiOutputs}
+            /> : 
+            <FaceRecognitionDummy />
+            }
           </div>
-          <div className=''>
+          <div className='formDisplay'>
             <Rank />
             <ImageLinkForm 
             onInputChange={this.onInputChange}
@@ -93,14 +101,7 @@ class App extends Component {
             />
           </div>
         </div>
-        { 
-        this.IMAGE_URL.includes('.jpg' || 'jpeg' || '.png' || '.pdf') ? 
-        <FaceRecognition 
-        urlImage={this.state.input}
-        clarifaiOutputs={this.state.clarifaiOutputs}
-        /> : 
-        <span></span> 
-        }
+        
       </div>
     );
   }
