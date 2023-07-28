@@ -13,8 +13,8 @@ button {
   cursor: pointer;
 }
 
-
-.image {
-  width: 80%;
-  height: auto;
+.center {
+  display: flex;
+  justify-content: center;
 }
+

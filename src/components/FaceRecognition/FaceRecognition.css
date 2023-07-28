@@ -1,0 +1,20 @@
+
+.faceContainer {
+    position: relative;
+}
+
+.image {
+    width: 350px;
+    height: auto;
+  }
+
+.bounding-box {
+    position: absolute;
+    box-shadow: 0 0 0 3px #149DF2 inset;
+    /* box-shadow: 0 0 0 3px red inset; */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    cursor: pointer;
+}
+

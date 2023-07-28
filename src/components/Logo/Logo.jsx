@@ -6,7 +6,7 @@ import './Logo.css'
 
 const Logo = () => {
     return(
-        <div className='ma4  container'>
+        <div className='ma4 container center'>
             <Tilt className='tilt'>
             <div className='shadow-2 br2 pa3'>
                 <img src={faceLogo} alt="face detection logo"/>

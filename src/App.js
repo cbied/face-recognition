@@ -4,17 +4,19 @@ import Navigation from './components/Navigation/Navigation';
 import Rank from './components/Rank/Rank';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
-import FaceRecognitionDummy from './components/FaceRecognition/FaceRecognitionDummy';
 import privateInfo from './environment';
 import './App.css';
 
+let PAT = '';
+let USER_ID = '';
+let APP_ID = '';
+
 const clarifaiRequestOptions = (imageURL) => {
   // PAT (property access token) lives in .env.local
-  const PAT = privateInfo.PAT;
+  PAT = privateInfo.PAT;
   // Specify the correct user_id/app_id pairings
-  const USER_ID = privateInfo.userId;       
-  const APP_ID = 'face-reg';
-  
+  USER_ID = privateInfo.userId;       
+  APP_ID = 'face-reg';
   // update IMAGE_URL to image input
   const IMAGE_URL = imageURL;
 
@@ -53,27 +55,42 @@ class App extends Component {
     this.state = {
       user: '',
       input: '',
-      clarifaiOutputs: ''
+      boundingboxs: {}
     }
+  }
+
+  findFaceBoxLocation = (data) => {
+    const clarifaFace = data.outputs[0].data.regions[0].region_info.bounding_box;
+    const image = document.getElementById('inputImg');
+    const width = +image.width;
+    const height = +image.height;
+    console.log(clarifaFace)
+    return {
+      topRow: clarifaFace.top_row * height,
+      bottomRow: height - (clarifaFace.bottom_row * height),
+      rightCol: width - (clarifaFace.right_col * width),
+      leftCol: clarifaFace.left_col * width
+    }
+  }
+
+  displayFaceBox = (box) => {
+    this.setState({boundingboxs: box})    
   }
 
   onInputChange = (event) => {
     this.setState({ input: event.target.value})
   }
 
-  IMAGE_URL = '';
+  
   onSubmit = () => {
-    // Change these to whatever model and image URL you want to use
+    // Change to model and image URL you want to use
     const MODEL_ID = 'face-detection';
     this.IMAGE_URL = this.state.input;
     fetch("https://api.clarifai.com/v2/models/" + MODEL_ID + "/outputs", clarifaiRequestOptions(this.IMAGE_URL))
     .then(response => response.json())
-    .then(result => {
-      console.log(result.outputs[0].data.regions[0].region_info.bounding_box)
-      this.setState({clarifaiOutputs: result});
-      this.render()
-    })
+    .then(result => this.displayFaceBox(this.findFaceBoxLocation(result)))
     .catch(error => console.log('error', error));
+    console.log(this.state.boundingboxs)
   }
 
 
@@ -84,14 +101,10 @@ class App extends Component {
         <Navigation />
         <div className='interfaceDisplay'>
           <div className='logoDisplay'>
-            { 
-            this.IMAGE_URL.includes('.jpg' || 'jpeg' || '.png' || '.pdf') ? 
-            <FaceRecognition 
+          <FaceRecognition 
             urlImage={this.state.input}
-            clarifaiOutputs={this.state.clarifaiOutputs}
-            /> : 
-            <FaceRecognitionDummy />
-            }
+            boundingboxs={this.state.boundingboxs}
+            />
           </div>
           <div className='formDisplay'>
             <Rank />
@@ -101,7 +114,6 @@ class App extends Component {
             />
           </div>
         </div>
-        
       </div>
     );
   }
