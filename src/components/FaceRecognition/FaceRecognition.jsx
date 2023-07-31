@@ -2,7 +2,6 @@ import React from 'react';
 import './FaceRecognition.css'
 
 const FaceRecognition = ({ urlImage, boundingboxs }) => {
-    console.log(boundingboxs)
     return(
         <div className='center na'>
             <div className='mt2 faceContainer'>

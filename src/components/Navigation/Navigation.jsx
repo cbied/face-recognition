@@ -1,10 +1,15 @@
 import React from 'react';
-import Logo from '../Logo/Logo';
 
-const Navigation = () => {
+const Navigation = ({ onRouteChange, showSignOut }) => {
     return(
         <nav style={{display: 'flex', justifyContent: 'flex-end', alignItems: 'center'}}>
-            <p className='f3 link dim black underline pa1 pointer'>Sign Out</p>
+            {
+                showSignOut ? 
+                <p className='f3 link dim black underline pa1 pointer'
+                onClick={() => onRouteChange('signIn')}>Sign Out</p>
+                :
+                    <p></p>         
+            }
         </nav>
     )
 }

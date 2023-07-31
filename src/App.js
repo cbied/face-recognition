@@ -3,6 +3,8 @@ import ParticlesBg from 'particles-bg'
 import Navigation from './components/Navigation/Navigation';
 import Rank from './components/Rank/Rank';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
+import SignIn from './components/SignIn/SignIn'
+import Register from './components/Register/Register';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import privateInfo from './environment';
 import './App.css';
@@ -55,7 +57,8 @@ class App extends Component {
     this.state = {
       user: '',
       input: '',
-      boundingboxs: {}
+      boundingboxs: {},
+      route: 'signIn'
     }
   }
 
@@ -93,27 +96,58 @@ class App extends Component {
     console.log(this.state.boundingboxs)
   }
 
+  showSignOut;
+  onRouteChange = (route) => {
+    this.setState({ route: route})
+    if (route === 'dashboard') {
+      this.showSignOut = true
+    } else {
+      this.showSignOut = false
+    }
+  }
+
 
   render() {
     return (
       <div className="App">
         <ParticlesBg type="cobweb" bg={true} color='#7ca4f4' num='250'/>
-        <Navigation />
-        <div className='interfaceDisplay'>
-          <div className='logoDisplay'>
-          <FaceRecognition 
-            urlImage={this.state.input}
-            boundingboxs={this.state.boundingboxs}
-            />
-          </div>
-          <div className='formDisplay'>
-            <Rank />
-            <ImageLinkForm 
-            onInputChange={this.onInputChange}
-            onSubmit={this.onSubmit}
-            />
-          </div>
-        </div>
+        <Navigation onRouteChange={this.onRouteChange} showSignOut={this.showSignOut}/>
+        
+        {
+          this.state.route === 'signIn' ?
+          <SignIn onRouteChange={this.onRouteChange}/>
+
+          : this.state.route === 'dashboard' ?
+
+          <div className='interfaceDisplay'>
+            <div className='logoDisplay'>
+            <FaceRecognition 
+              urlImage={this.state.input}
+              boundingboxs={this.state.boundingboxs}
+              />
+            </div>
+            <div className='formDisplay'>
+              <Rank />
+              <ImageLinkForm 
+              onInputChange={this.onInputChange}
+              onSubmit={this.onSubmit}
+              />
+            </div>
+         </div>
+
+         : this.state.route === 'register' ?
+         <Register onRouteChange={this.onRouteChange}/>
+
+         :
+         
+         <div><h2>oops, something went wrong</h2></div>
+        }
+          
+          
+          
+    
+        
+        
       </div>
     );
   }
