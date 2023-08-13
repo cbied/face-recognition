@@ -14,7 +14,7 @@ let USER_ID = '';
 let APP_ID = '';
 
 const clarifaiRequestOptions = (imageURL) => {
-  // PAT (property access token) lives in .env.local
+  // PAT (property access token) lives in environment.js
   PAT = privateInfo.PAT;
   // Specify the correct user_id/app_id pairings
   USER_ID = privateInfo.userId;       
@@ -67,7 +67,6 @@ class App extends Component {
     const image = document.getElementById('inputImg');
     const width = +image.width;
     const height = +image.height;
-    console.log(clarifaFace)
     return {
       topRow: clarifaFace.top_row * height,
       bottomRow: height - (clarifaFace.bottom_row * height),
@@ -93,7 +92,6 @@ class App extends Component {
     .then(response => response.json())
     .then(result => this.displayFaceBox(this.findFaceBoxLocation(result)))
     .catch(error => console.log('error', error));
-    console.log(this.state.boundingboxs)
   }
 
   showSignOut;
