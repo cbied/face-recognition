@@ -58,9 +58,17 @@ class App extends Component {
       user: '',
       input: '',
       boundingboxs: {},
-      route: 'signIn'
+      route: 'signIn',
+      userInfo: {
+        id: 0,
+        name: '',
+        email: '',
+        entries: 0,
+        joined: ''
+    }
     }
   }
+
 
   findFaceBoxLocation = (data) => {
     const clarifaFace = data.outputs[0].data.regions[0].region_info.bounding_box;
@@ -104,6 +112,18 @@ class App extends Component {
     }
   }
 
+  loadUser = (user) => {
+    this.setState({
+        userInfo: {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          entries: user.entries,
+          joined: user.joined,
+        }
+      })
+  }
+
 
   render() {
     return (
@@ -134,7 +154,8 @@ class App extends Component {
          </div>
 
          : this.state.route === 'register' ?
-         <Register onRouteChange={this.onRouteChange}/>
+         <Register onRouteChange={this.onRouteChange}
+                   loadUser={this.loadUser}/>
 
          :
          
