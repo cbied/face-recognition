@@ -20,8 +20,8 @@ class SignIn extends React.Component {
         this.setState({signInPassword: event.target.value});
     }
 
-    onSubmitSignIn = () => {
-        fetch('http://localhost:3001/signIn', {
+    onSubmitSignIn = async () => {
+        await fetch('http://localhost:3001/signIn', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
@@ -30,8 +30,9 @@ class SignIn extends React.Component {
             })
         })
         .then(res => res.json())
-        .then(data => {
-            if(data === 'Success') {
+        .then(user => {
+            if(user.id) {
+                this.props.loadUser(user)
                 this.props.onRouteChange('dashboard')
             } else {
                 alert('Incorrect username or password')

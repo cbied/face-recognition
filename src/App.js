@@ -65,7 +65,9 @@ class App extends Component {
         email: '',
         entries: 0,
         joined: ''
-    }
+    },
+      imageUrl: '',
+      isSignedIn: false
     }
   }
 
@@ -113,6 +115,7 @@ class App extends Component {
   }
 
   loadUser = (user) => {
+    console.log(user)
     this.setState({
         userInfo: {
           id: user.id,
@@ -122,18 +125,40 @@ class App extends Component {
           joined: user.joined,
         }
       })
+      this.setRank(user.name, user.entries)
+  }
+
+  newUser;
+  setRank = (userName, userEntries) => {
+    const userRank = {
+      name: userName,
+      entries: userEntries
+    }
+
+    this.newUser = userRank
   }
 
 
   render() {
     return (
       <div className="App">
-        <ParticlesBg type="cobweb" bg={true} color='#7ca4f4' num='250'/>
-        <Navigation onRouteChange={this.onRouteChange} showSignOut={this.showSignOut}/>
+        <ParticlesBg 
+        type="cobweb" 
+        bg={true} 
+        color='#7ca4f4' 
+        num='250'
+        />
+        <Navigation 
+        onRouteChange={this.onRouteChange} 
+        showSignOut={this.showSignOut}
+        />
         
         {
           this.state.route === 'signIn' ?
-          <SignIn onRouteChange={this.onRouteChange}/>
+          <SignIn 
+          onRouteChange={this.onRouteChange}
+          loadUser={this.loadUser}
+          />
 
           : this.state.route === 'dashboard' ?
 
@@ -145,7 +170,11 @@ class App extends Component {
               />
             </div>
             <div className='formDisplay'>
-              <Rank />
+              {this.newUser ? 
+              <Rank 
+              newUser={this.newUser}
+              /> : 
+              null}
               <ImageLinkForm 
               onInputChange={this.onInputChange}
               onSubmit={this.onSubmit}
@@ -154,8 +183,10 @@ class App extends Component {
          </div>
 
          : this.state.route === 'register' ?
-         <Register onRouteChange={this.onRouteChange}
-                   loadUser={this.loadUser}/>
+         <Register 
+         onRouteChange={this.onRouteChange}
+         loadUser={this.loadUser}
+         />
 
          :
          
