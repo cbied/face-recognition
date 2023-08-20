@@ -94,19 +94,35 @@ class App extends Component {
   }
 
   
-  onSubmit = () => {
+  onSubmit = async () => {
     // Change to model and image URL you want to use
     const MODEL_ID = 'face-detection';
     this.IMAGE_URL = this.state.input;
-    fetch("https://api.clarifai.com/v2/models/" + MODEL_ID + "/outputs", clarifaiRequestOptions(this.IMAGE_URL))
+    await fetch("https://api.clarifai.com/v2/models/" + MODEL_ID + "/outputs", clarifaiRequestOptions(this.IMAGE_URL))
     .then(response => response.json())
-    .then(result => this.displayFaceBox(this.findFaceBoxLocation(result)))
+    .then(result => {
+      this.displayFaceBox(this.findFaceBoxLocation(result))
+      if (result) {
+        fetch('http://localhost:3001/image', {
+            method: 'PUT',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                id: this.state.userInfo.id,
+                entries: this.state.userInfo.entries
+            })
+        })
+        .then(response => response.json())
+        .then(userEntries => {
+          this.setState(Object.assign(this.state.userInfo, { entries: userEntries}))
+        })
+      }
+    })
     .catch(error => console.log('error', error));
   }
 
   showSignOut;
   onRouteChange = (route) => {
-    this.setState({ route: route})
+    this.setState({ route: route })
     if (route === 'dashboard') {
       this.showSignOut = true
     } else {
@@ -115,7 +131,6 @@ class App extends Component {
   }
 
   loadUser = (user) => {
-    console.log(user)
     this.setState({
         userInfo: {
           id: user.id,
@@ -125,19 +140,7 @@ class App extends Component {
           joined: user.joined,
         }
       })
-      this.setRank(user.name, user.entries)
   }
-
-  newUser;
-  setRank = (userName, userEntries) => {
-    const userRank = {
-      name: userName,
-      entries: userEntries
-    }
-
-    this.newUser = userRank
-  }
-
 
   render() {
     return (
@@ -170,9 +173,9 @@ class App extends Component {
               />
             </div>
             <div className='formDisplay'>
-              {this.newUser ? 
+              {this.state.userInfo.id ? 
               <Rank 
-              newUser={this.newUser}
+              newUser={this.state.userInfo}
               /> : 
               null}
               <ImageLinkForm 

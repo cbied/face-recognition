@@ -2,16 +2,12 @@ import React, { Component } from 'react';
 import Logo from '../Logo/Logo';
 
 class Rank extends Component {
-    constructor(props) {
-        super(props)
-        console.log(this.props.newUser)
-    }
     render() {
         return (
             <div>
                 <Logo />
                 <div className="f3 b">
-                    {`${this.props.newUser.name} your current rank is...`}
+                    {`${this.props.newUser.name}, your current entry count...`}
                 </div>
                 <div className="f1 pa2 b">
                     {this.props.newUser.entries}
