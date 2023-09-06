@@ -53,11 +53,10 @@ class Register extends React.Component {
             })
         })
         .then(res => res.json())
-        .then(data => {
-            const length = data.users.length - 1
-            if (data.users[length]) {
-                this.updateUserState(data.users[length])
-                this.props.loadUser(data.users[length])
+        .then(user => {
+            if (user) {
+                this.updateUserState(user)
+                this.props.loadUser(user)
                 this.props.onRouteChange('dashboard')
             } else {
                 alert('Registration Failed, please try again')
