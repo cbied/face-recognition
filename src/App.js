@@ -6,6 +6,7 @@ import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import SignIn from './components/SignIn/SignIn'
 import Register from './components/Register/Register';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
+import LinkExamples from './components/LinkExamples/LinkExamples';
 import privateInfo from './environment';
 import './App.css';
 
@@ -58,17 +59,19 @@ class App extends Component {
       user: '',
       input: '',
       boundingboxs: {},
-      route: 'signIn',
+      route: localStorage.getItem("id") ? 'dashboard' : 'signIn',
       userInfo: {
-        id: 0,
-        name: '',
-        email: '',
-        entries: 0,
-        joined: ''
+        id: localStorage.getItem("id") ? localStorage.getItem("id") : 0,
+        name: localStorage.getItem("name") ? localStorage.getItem("name") : '' ,
+        email: localStorage.getItem("email") ? localStorage.getItem("email") : '',
+        entries: localStorage.getItem("entries") ? localStorage.getItem("entries") : 0,
+        joined: localStorage.getItem("joined") ? localStorage.getItem("joined") : ''
     },
       imageUrl: '',
       isSignedIn: false
     }
+    console.log(localStorage)
+    this.onRouteChange()
   }
 
 
@@ -128,17 +131,22 @@ class App extends Component {
     .catch(error => console.log('error', error));
   }
 
-  showSignOut;
   onRouteChange = (route) => {
-    this.setState({ route: route })
-    if (route === 'dashboard') {
-      this.showSignOut = true
+    if (localStorage.getItem("id") && route !== 'signIn') {
+      this.setState({ route: 'dashboard' })
     } else {
-      this.showSignOut = false
+      localStorage.clear();
+      this.setState({ route: route })
     }
   }
 
   loadUser = (user) => {
+    localStorage.setItem('id', user.id)
+    localStorage.setItem('name', user.name)
+    localStorage.setItem('email', user.email)
+    localStorage.setItem('entries', user.entries)
+    localStorage.setItem('joined', user.joined)
+
     this.setState({
         userInfo: {
           id: user.id,
@@ -163,20 +171,16 @@ class App extends Component {
 
         <Navigation 
         onRouteChange={this.onRouteChange} 
-        showSignOut={this.showSignOut}
+        currentRoute={this.state.route}
         />
         
         {
 
-          this.state.route === 'signIn' ?
-          <SignIn 
-          onRouteChange={this.onRouteChange}
-          loadUser={this.loadUser}
-          />
+          
 
-          : this.state.route === 'dashboard' ?
+        this.state.route === 'dashboard' && localStorage.getItem("id") ?
 
-          <div className='interfaceDisplay'>
+        <div className='interfaceDisplay'>
             <div className='logoDisplay'>
               {this.state.input ? 
               <FaceRecognition 
@@ -197,18 +201,26 @@ class App extends Component {
               onInputChange={this.onInputChange}
               onSubmit={this.onSubmit}
               />
+            <LinkExamples/>
             </div>
          </div>
 
-        : this.state.route === 'register' ?
-         <Register 
-         onRouteChange={this.onRouteChange}
-         loadUser={this.loadUser}
-         />
+          : 
+          this.state.route === 'signIn' && !localStorage.getItem("id") ?
+          <SignIn 
+          onRouteChange={this.onRouteChange}
+          loadUser={this.loadUser}
+          />
 
-         :
-         
-         <div><h2>oops, something went wrong</h2></div>
+          : this.state.route === 'register' && !localStorage.getItem("id") ?
+          <Register 
+          onRouteChange={this.onRouteChange}
+          loadUser={this.loadUser}
+          />
+
+          :
+          
+          <div><h2>oops, something went wrong</h2></div>
          
         }
           
