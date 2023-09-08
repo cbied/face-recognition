@@ -68,9 +68,13 @@ class App extends Component {
         joined: localStorage.getItem("joined") ? localStorage.getItem("joined") : ''
     },
       imageUrl: '',
-      isSignedIn: false
+      isSignedIn: false,
+      textToCopy: ''
     }
-    console.log(localStorage)
+    
+  }
+
+  componentDidMount() {
     this.onRouteChange()
   }
 
@@ -97,6 +101,7 @@ class App extends Component {
 
   onInputChange = (event) => {
     this.setState({ input: event.target.value})
+    this.setState({ boundingboxs: {}})
   }
 
   
@@ -125,6 +130,7 @@ class App extends Component {
         .then(userEntries => {
           // set new userEntries state
           this.setState(Object.assign(this.state.userInfo, { entries: userEntries}))
+          localStorage.setItem('entries', userEntries)
         })
       }
     })
@@ -156,6 +162,10 @@ class App extends Component {
           joined: user.joined,
         }
       })
+  }
+
+  onCopyText(event) {
+    navigator.clipboard.writeText(event.target.previousSibling.textContent)
   }
 
   render() {
@@ -201,7 +211,9 @@ class App extends Component {
               onInputChange={this.onInputChange}
               onSubmit={this.onSubmit}
               />
-            <LinkExamples/>
+              <LinkExamples
+              onCopyText={this.onCopyText}
+              />
             </div>
          </div>
 

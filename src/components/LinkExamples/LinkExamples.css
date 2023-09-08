@@ -1,0 +1,21 @@
+.copyLinks {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.links {
+    display: flex;
+    align-items: center;
+    max-width: 22rem;
+    max-height: 2rem;
+    background: rgb(148, 128, 128);
+    opacity: .5;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.button {
+    max-width: 10rem;
+}
