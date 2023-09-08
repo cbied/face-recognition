@@ -4,7 +4,7 @@ import './FaceRecognition.css'
 const FaceRecognition = ({ urlImage, boundingboxs }) => {
     return(
         <div className='center na'>
-            <div className='mt2 faceContainer'>
+            <div className='mt2 faceContainer'>         
                 <img src={urlImage} 
                     alt="" 
                     className='image' 

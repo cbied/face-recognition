@@ -73,10 +73,13 @@ class App extends Component {
 
 
   findFaceBoxLocation = (data) => {
+    // object that holds bounding box points (percentages)
     const clarifaFace = data.outputs[0].data.regions[0].region_info.bounding_box;
     const image = document.getElementById('inputImg');
+    // find image width and height and to compare with percentages
     const width = +image.width;
     const height = +image.height;
+    // return points that box face
     return {
       topRow: clarifaFace.top_row * height,
       bottomRow: height - (clarifaFace.bottom_row * height),
@@ -95,13 +98,17 @@ class App extends Component {
 
   
   onSubmit = async () => {
-    // Change to model and image URL you want to use
+    // model for face detection API
     const MODEL_ID = 'face-detection';
+    // current image user is using
     this.IMAGE_URL = this.state.input;
+    // fetch carifai API to get bounding boxes for face
     await fetch("https://api.clarifai.com/v2/models/" + MODEL_ID + "/outputs", clarifaiRequestOptions(this.IMAGE_URL))
     .then(response => response.json())
     .then(result => {
+      // find location of face, plot four points for box, and draw box
       this.displayFaceBox(this.findFaceBoxLocation(result))
+      // if we recieve a result for API, send put to server to update user entries
       if (result) {
         fetch('http://localhost:3001/image', {
             method: 'PUT',
@@ -113,6 +120,7 @@ class App extends Component {
         })
         .then(response => response.json())
         .then(userEntries => {
+          // set new userEntries state
           this.setState(Object.assign(this.state.userInfo, { entries: userEntries}))
         })
       }
@@ -145,18 +153,21 @@ class App extends Component {
   render() {
     return (
       <div className="App">
+
         <ParticlesBg 
         type="cobweb" 
         bg={true} 
         color='#7ca4f4' 
         num='250'
         />
+
         <Navigation 
         onRouteChange={this.onRouteChange} 
         showSignOut={this.showSignOut}
         />
         
         {
+
           this.state.route === 'signIn' ?
           <SignIn 
           onRouteChange={this.onRouteChange}
@@ -167,10 +178,14 @@ class App extends Component {
 
           <div className='interfaceDisplay'>
             <div className='logoDisplay'>
-            <FaceRecognition 
+              {this.state.input ? 
+              <FaceRecognition 
               urlImage={this.state.input}
               boundingboxs={this.state.boundingboxs}
               />
+              :
+              null
+            }
             </div>
             <div className='formDisplay'>
               {this.state.userInfo.id ? 
@@ -185,7 +200,7 @@ class App extends Component {
             </div>
          </div>
 
-         : this.state.route === 'register' ?
+        : this.state.route === 'register' ?
          <Register 
          onRouteChange={this.onRouteChange}
          loadUser={this.loadUser}
@@ -194,6 +209,7 @@ class App extends Component {
          :
          
          <div><h2>oops, something went wrong</h2></div>
+         
         }
           
           

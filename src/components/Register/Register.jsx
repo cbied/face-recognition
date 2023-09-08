@@ -43,6 +43,7 @@ class Register extends React.Component {
     }
 
     onRegistration = async () => {
+        // POST to server name, email, password/hash
         await fetch('http://localhost:3001/register', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
@@ -54,6 +55,7 @@ class Register extends React.Component {
         })
         .then(res => res.json())
         .then(user => {
+            // if responses with user, load user state and change route to dashboard
             if (user) {
                 this.updateUserState(user)
                 this.props.loadUser(user)

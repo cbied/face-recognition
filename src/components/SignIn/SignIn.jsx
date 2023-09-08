@@ -21,6 +21,7 @@ class SignIn extends React.Component {
     }
 
     onSubmitSignIn = async () => {
+        // Post to server, sign in with email and password
         await fetch('http://localhost:3001/signIn', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
@@ -31,6 +32,7 @@ class SignIn extends React.Component {
         })
         .then(res => res.json())
         .then(user => {
+            // if a user ID is found, load user state and route to dashboard
             if(user.id) {
                 this.props.loadUser(user)
                 this.props.onRouteChange('dashboard')
