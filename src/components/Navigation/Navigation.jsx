@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Navigation = ({ onRouteChange, showSignOut, currentRoute }) => {
+const Navigation = ({ onRouteChange, currentRoute }) => {
     return(
         <nav style={{display: 'flex', justifyContent: 'flex-end', alignItems: 'center'}}>
             {

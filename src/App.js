@@ -74,11 +74,6 @@ class App extends Component {
     
   }
 
-  componentDidMount() {
-    this.onRouteChange()
-  }
-
-
   findFaceBoxLocation = (data) => {
     // object that holds bounding box points (percentages)
     const clarifaFace = data.outputs[0].data.regions[0].region_info.bounding_box;
@@ -132,6 +127,7 @@ class App extends Component {
           this.setState(Object.assign(this.state.userInfo, { entries: userEntries}))
           localStorage.setItem('entries', userEntries)
         })
+        .catch(console.log())
       }
     })
     .catch(error => console.log('error', error));
@@ -142,6 +138,8 @@ class App extends Component {
       this.setState({ route: 'dashboard' })
     } else {
       localStorage.clear();
+      this.setState({ boundingboxs: {}})
+      this.setState({ input: {}})
       this.setState({ route: route })
     }
   }
@@ -192,39 +190,58 @@ class App extends Component {
 
         <div className='interfaceDisplay'>
             <div className='logoDisplay'>
-              {this.state.input ? 
-              <FaceRecognition 
-              urlImage={this.state.input}
-              boundingboxs={this.state.boundingboxs}
-              />
-              :
-              null
+
+            {
+
+            this.state.input ? 
+            <FaceRecognition 
+            urlImage={this.state.input}
+            boundingboxs={this.state.boundingboxs}
+            />
+            :
+            null
+
             }
+
             </div>
+
             <div className='formDisplay'>
-              {this.state.userInfo.id ? 
+
+              {
+
+              this.state.userInfo.id ? 
               <Rank 
               newUser={this.state.userInfo}
               /> : 
-              null}
+              null
+              
+              }
+
               <ImageLinkForm 
               onInputChange={this.onInputChange}
               onSubmit={this.onSubmit}
               />
+
               <LinkExamples
               onCopyText={this.onCopyText}
               />
+
             </div>
          </div>
 
           : 
+
           this.state.route === 'signIn' && !localStorage.getItem("id") ?
+
           <SignIn 
           onRouteChange={this.onRouteChange}
           loadUser={this.loadUser}
           />
 
-          : this.state.route === 'register' && !localStorage.getItem("id") ?
+          : 
+          
+          this.state.route === 'register' && !localStorage.getItem("id") ?
+
           <Register 
           onRouteChange={this.onRouteChange}
           loadUser={this.loadUser}

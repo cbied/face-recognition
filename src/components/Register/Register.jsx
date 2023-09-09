@@ -56,7 +56,7 @@ class Register extends React.Component {
         .then(res => res.json())
         .then(user => {
             // if responses with user, load user state and change route to dashboard
-            if (user) {
+            if (user.id) {
                 this.updateUserState(user)
                 this.props.loadUser(user)
                 this.props.onRouteChange('dashboard')
