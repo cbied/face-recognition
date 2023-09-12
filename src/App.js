@@ -7,49 +7,9 @@ import SignIn from './components/SignIn/SignIn'
 import Register from './components/Register/Register';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import LinkExamples from './components/LinkExamples/LinkExamples';
-import privateInfo from './environment';
 import './App.css';
 
-let PAT = '';
-let USER_ID = '';
-let APP_ID = '';
 
-const clarifaiRequestOptions = (imageURL) => {
-  // PAT (property access token) lives in environment.js
-  PAT = privateInfo.PAT;
-  // Specify the correct user_id/app_id pairings
-  USER_ID = privateInfo.userId;       
-  APP_ID = 'face-reg';
-  // update IMAGE_URL to image input
-  const IMAGE_URL = imageURL;
-
-  const raw = JSON.stringify({
-    "user_app_id": {
-        "user_id": USER_ID,
-        "app_id": APP_ID
-    },
-    "inputs": [
-        {
-            "data": {
-                "image": {
-                    "url": IMAGE_URL
-                }
-            }
-        }
-    ]
-});
-
-  const requestOptions = {
-    method: 'POST',
-    headers: {
-        'Accept': 'application/json',
-        'Authorization': 'Key ' + PAT
-    },
-    body: raw
-  };
-
-  return requestOptions
-}
 
 
 class App extends Component {
@@ -101,13 +61,14 @@ class App extends Component {
 
   
   onSubmit = async () => {
-    // model for face detection API
-    const MODEL_ID = 'face-detection';
-    // current image user is using
-    this.IMAGE_URL = this.state.input;
-    // fetch carifai API to get bounding boxes for face
-    await fetch("https://api.clarifai.com/v2/models/" + MODEL_ID + "/outputs", clarifaiRequestOptions(this.IMAGE_URL))
-    .then(response => response.json())
+    await fetch('http://localhost:3001/imageurl', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+          input: this.state.input
+      })
+  })
+  .then(response => response.json())
     .then(result => {
       // find location of face, plot four points for box, and draw box
       this.displayFaceBox(this.findFaceBoxLocation(result))
