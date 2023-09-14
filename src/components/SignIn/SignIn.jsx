@@ -7,10 +7,12 @@ class SignIn extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            signInEmail: '',
-            signInPassword: ''
+            signInEmail: 'user1@gmail.com',
+            signInPassword: '1234'
         }
     }
+
+    herokuLink = 'https://limitless-beach-11215-0d644074e9f3.herokuapp.com'
     
     onEmailChange = (event) => {
         this.setState({signInEmail: event.target.value});
@@ -22,7 +24,8 @@ class SignIn extends React.Component {
 
     onSubmitSignIn = async () => {
         // Post to server, sign in with email and password
-        await fetch('http://localhost:3001/signIn', {
+        await fetch (`${this.herokuLink}/signIn`, {
+            mode: 'no-cors',
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
@@ -52,18 +55,22 @@ class SignIn extends React.Component {
                         <legend className="f2 fw6 ph0 mh0">Sign In</legend>
                         <div className="mt3">
                             <label className="db fw6 lh-copy f6">Email</label>
-                            <input onChange={this.onEmailChange} 
+                            <input 
                             className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"  
                             name="email-address"  
-                            id="email-address" />
+                            id="email-address"
+                            value={this.state.signInEmail} 
+                            onChange={this.onEmailChange} />
                         </div>
                         <div className="mv3">
                             <label className="db fw6 lh-copy f6">Password</label>
-                            <input onChange={this.onPasswordChange}
+                            <input 
                             className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" 
                             type="password" 
                             name="password"  
-                            id="password" />
+                            id="password" 
+                            onChange={this.onPasswordChange}
+                            value={this.state.signInPassword}/>
                         </div>
                         </fieldset>
                         <div>

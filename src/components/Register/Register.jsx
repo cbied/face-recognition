@@ -18,6 +18,8 @@ class Register extends React.Component {
         }
     }
 
+    herokuLink = 'https://limitless-beach-11215-0d644074e9f3.herokuapp.com'
+
     onNameChange = (event) => {
         this.setState({name: event.target.value});
     }
@@ -44,9 +46,10 @@ class Register extends React.Component {
 
     onRegistration = async () => {
         // POST to server name, email, password/hash
-        await fetch('http://localhost:3001/register', {
+        await fetch(`${this.herokuLink}/register`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
+            mode: 'no-cors',
             body: JSON.stringify({
                 name: this.state.name,
                 email: this.state.email,

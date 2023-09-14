@@ -34,6 +34,7 @@ class App extends Component {
     
   }
 
+  herokuLink = 'https://limitless-beach-11215-0d644074e9f3.herokuapp.com'
   findFaceBoxLocation = (data) => {
     // object that holds bounding box points (percentages)
     const clarifaFace = data.outputs[0].data.regions[0].region_info.bounding_box;
@@ -61,7 +62,8 @@ class App extends Component {
 
   
   onSubmit = async () => {
-    await fetch('http://localhost:3001/imageurl', {
+    await fetch(`${this.herokuLink}/imageurl`, {
+      mode: 'no-cors',
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -74,7 +76,8 @@ class App extends Component {
       this.displayFaceBox(this.findFaceBoxLocation(result))
       // if we recieve a result for API, send put to server to update user entries
       if (result) {
-        fetch('http://localhost:3001/image', {
+        fetch(`${this.herokuLink}/image`, {
+            mode: 'no-cors',
             method: 'PUT',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
