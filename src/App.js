@@ -9,9 +9,6 @@ import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import LinkExamples from './components/LinkExamples/LinkExamples';
 import './App.css';
 
-
-
-
 class App extends Component {
   constructor(props) {
     super(props);
