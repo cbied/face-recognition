@@ -25,7 +25,6 @@ class SignIn extends React.Component {
     onSubmitSignIn = async () => {
         // Post to server, sign in with email and password
         await fetch (`${this.herokuLink}/signIn`, {
-            mode: 'no-cors',
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({

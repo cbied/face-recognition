@@ -63,7 +63,6 @@ class App extends Component {
   
   onSubmit = async () => {
     await fetch(`${this.herokuLink}/imageurl`, {
-      mode: 'no-cors',
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -77,7 +76,6 @@ class App extends Component {
       // if we recieve a result for API, send put to server to update user entries
       if (result) {
         fetch(`${this.herokuLink}/image`, {
-            mode: 'no-cors',
             method: 'PUT',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
