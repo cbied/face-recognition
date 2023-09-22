@@ -62,6 +62,7 @@ class App extends Component {
     await fetch(`${this.herokuLink}/imageurl`, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
+      mode: 'no-cors',
       body: JSON.stringify({
           input: this.state.input
       })
@@ -75,6 +76,7 @@ class App extends Component {
         fetch(`${this.herokuLink}/image`, {
             method: 'PUT',
             headers: {'Content-Type': 'application/json'},
+            mode: 'no-cors',
             body: JSON.stringify({
                 id: this.state.userInfo.id,
                 entries: this.state.userInfo.entries
