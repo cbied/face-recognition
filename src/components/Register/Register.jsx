@@ -49,7 +49,6 @@ class Register extends React.Component {
         await fetch(`${this.herokuLink}/register`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            mode: 'no-cors',
             body: JSON.stringify({
                 name: this.state.name,
                 email: this.state.email,

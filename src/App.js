@@ -33,23 +33,28 @@ class App extends Component {
 
   herokuLink = 'https://limitless-beach-11215-0d644074e9f3.herokuapp.com'
   findFaceBoxLocation = (data) => {
-    // object that holds bounding box points (percentages)
-    const clarifaFace = data.outputs[0].data.regions[0].region_info.bounding_box;
-    const image = document.getElementById('inputImg');
+   const regionsArr = data.outputs[0].data.regions
+   let boxFaceLocationArr = [];
+   const image = document.getElementById('inputImg');
     // find image width and height and to compare with percentages
     const width = +image.width;
     const height = +image.height;
-    // return points that box face
-    return {
-      topRow: clarifaFace.top_row * height,
-      bottomRow: height - (clarifaFace.bottom_row * height),
-      rightCol: width - (clarifaFace.right_col * width),
-      leftCol: clarifaFace.left_col * width
+    // object that holds bounding box points (percentages)
+    for(let i = 0; i < regionsArr.length; i++) {
+      const boxObj = regionsArr[i].region_info.bounding_box
+      boxFaceLocationArr.push({
+        topRow: boxObj.top_row * height,
+        bottomRow: height - (boxObj.bottom_row * height),
+        rightCol: width - (boxObj.right_col * width),
+        leftCol: boxObj.left_col * width
+      })
     }
+    // return points that box faces
+    return boxFaceLocationArr
   }
 
   displayFaceBox = (box) => {
-    this.setState({boundingboxs: box})    
+    this.setState({boundingboxs: box})  
   }
 
   onInputChange = (event) => {
@@ -61,7 +66,6 @@ class App extends Component {
   onSubmit = async () => {
     await fetch(`${this.herokuLink}/imageurl`, {
       method: 'POST',
-      mode: 'no-cors',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
           input: this.state.input
@@ -75,7 +79,6 @@ class App extends Component {
       if (result) {
         fetch(`${this.herokuLink}/image`, {
             method: 'PUT',
-            mode: 'no-cors',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
                 id: this.state.userInfo.id,
