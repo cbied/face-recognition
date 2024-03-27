@@ -1,17 +1,22 @@
-import React from 'react';
+import React from "react";
+import ProfileIcon from "../Profile/ProfileIcon";
 
 const Navigation = ({ onRouteChange, currentRoute }) => {
-    return(
-        <nav style={{display: 'flex', justifyContent: 'flex-end', alignItems: 'center'}}>
-            {
-                currentRoute !== 'signIn' ? 
-                <p className='f3 link dim black underline pa1 pointer'
-                onClick={() => onRouteChange('signIn')}>Sign Out</p>
-                :
-                    <p></p>         
-            }
-        </nav>
-    )
-}
+  return (
+    <nav
+      style={{
+        display: "flex",
+        justifyContent: "flex-end",
+        alignItems: "center",
+      }}
+    >
+      {currentRoute !== "signIn" ? (
+        <ProfileIcon onRouteChange={onRouteChange} />
+      ) : (
+        <p></p>
+      )}
+    </nav>
+  );
+};
 
 export default Navigation;
