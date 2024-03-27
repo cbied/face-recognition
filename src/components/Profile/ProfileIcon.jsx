@@ -4,18 +4,18 @@ import PlusIcon from "@rsuite/icons/Plus";
 const ProfileIcon = ({ onRouteChange, handleOpen }) => {
   const renderMenu = ({ onClose, left, top, className }, ref) => {
     const handleSelect = (eventKey) => {
+      if (eventKey === 1) {
+        handleOpen();
+      } else {
+        onRouteChange("signIn");
+      }
       onClose();
-      console.log(eventKey);
     };
     return (
       <Popover ref={ref} className={className} style={{ left, top }} full>
         <Dropdown.Menu onSelect={handleSelect}>
-          <Dropdown.Item eventKey={1} onClick={() => handleOpen()}>
-            View Profile
-          </Dropdown.Item>
-          <Dropdown.Item eventKey={2} onClick={() => onRouteChange("signIn")}>
-            Sign Out
-          </Dropdown.Item>
+          <Dropdown.Item eventKey={1}>View Profile</Dropdown.Item>
+          <Dropdown.Item eventKey={2}>Sign Out</Dropdown.Item>
         </Dropdown.Menu>
       </Popover>
     );

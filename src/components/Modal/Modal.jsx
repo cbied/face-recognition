@@ -10,7 +10,6 @@ const ProfileModal = ({
   user,
 }) => {
   // Your component logic goes here
-  console.log(user);
   return (
     <Modal size={"md"} open={modalOpen} onClose={handleClose}>
       <Modal.Header>
