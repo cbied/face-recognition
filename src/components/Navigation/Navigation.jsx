@@ -1,7 +1,12 @@
 import React from "react";
 import ProfileIcon from "../Profile/ProfileIcon";
 
-const Navigation = ({ onRouteChange, currentRoute }) => {
+const Navigation = ({
+  onRouteChange,
+  currentRoute,
+  handleOpen,
+  handleClose,
+}) => {
   return (
     <nav
       style={{
@@ -11,7 +16,11 @@ const Navigation = ({ onRouteChange, currentRoute }) => {
       }}
     >
       {currentRoute !== "signIn" ? (
-        <ProfileIcon onRouteChange={onRouteChange} />
+        <ProfileIcon
+          onRouteChange={onRouteChange}
+          handleOpen={handleOpen}
+          handleClose={handleClose}
+        />
       ) : (
         <p></p>
       )}

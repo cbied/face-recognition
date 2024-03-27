@@ -1,7 +1,7 @@
 import { Dropdown, ButtonToolbar, Popover, IconButton, Whisper } from "rsuite";
 import PlusIcon from "@rsuite/icons/Plus";
 
-const ProfileIcon = ({ onRouteChange }) => {
+const ProfileIcon = ({ onRouteChange, handleOpen }) => {
   const renderMenu = ({ onClose, left, top, className }, ref) => {
     const handleSelect = (eventKey) => {
       onClose();
@@ -10,7 +10,9 @@ const ProfileIcon = ({ onRouteChange }) => {
     return (
       <Popover ref={ref} className={className} style={{ left, top }} full>
         <Dropdown.Menu onSelect={handleSelect}>
-          <Dropdown.Item eventKey={1}>View Profile</Dropdown.Item>
+          <Dropdown.Item eventKey={1} onClick={() => handleOpen()}>
+            View Profile
+          </Dropdown.Item>
           <Dropdown.Item eventKey={2} onClick={() => onRouteChange("signIn")}>
             Sign Out
           </Dropdown.Item>

@@ -7,7 +7,7 @@ import SignIn from "./components/SignIn/SignIn";
 import Register from "./components/Register/Register";
 import FaceRecognition from "./components/FaceRecognition/FaceRecognition";
 import LinkExamples from "./components/LinkExamples/LinkExamples";
-
+import ProfileModal from "./components/Modal/Modal";
 import "./App.css";
 
 class App extends Component {
@@ -28,8 +28,15 @@ class App extends Component {
       imageUrl: "",
       isSignedIn: false,
       textToCopy: "",
+      modalOpen: false,
+      modalSize: "md",
     };
   }
+
+  handleOpen = () => {
+    this.setState({ modalOpen: true });
+  };
+  handleClose = () => this.setState({ modalOpen: false });
 
   herokuLink = "https://limitless-beach-11215-0d644074e9f3.herokuapp.com";
   localhost = "http://localhost:3001";
@@ -127,6 +134,7 @@ class App extends Component {
         <ParticlesBg type="cobweb" bg={true} color="#7ca4f4" num="250" />
 
         <Navigation
+          handleOpen={this.handleOpen}
           onRouteChange={this.onRouteChange}
           currentRoute={this.state.route}
         />
@@ -140,6 +148,11 @@ class App extends Component {
                   boundingboxs={this.state.boundingboxs}
                 />
               ) : null}
+              <ProfileModal
+                modalOpen={this.state.modalOpen}
+                handleClose={this.handleClose}
+                user={this.state.userInfo}
+              />
             </div>
 
             <div className="formDisplay">
