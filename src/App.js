@@ -77,7 +77,7 @@ class App extends Component {
         this.displayFaceBox(this.findFaceBoxLocation(result));
         // if we recieve a result for API, send put to server to update user entries
         if (result) {
-          fetch(`${this.localhost}/image`, {
+          fetch(`${this.herokuLink}/image`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
