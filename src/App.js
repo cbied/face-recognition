@@ -36,10 +36,20 @@ class App extends Component {
   handleOpen = () => {
     this.setState({ modalOpen: true });
   };
-  handleClose = () => this.setState({ modalOpen: false });
-
   herokuLink = "https://limitless-beach-11215-0d644074e9f3.herokuapp.com";
   localhost = "http://localhost:3001";
+  handleClose = async () => {
+    this.setState({ modalOpen: false });
+    await fetch(`${this.herokuLink}/profile/${this.state.userInfo.id}`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((res) => res.json())
+      .then((user) => {
+        this.setState({ userInfo: user });
+      });
+  };
+
   findFaceBoxLocation = (data) => {
     const regionsArr = data.outputs[0].data.regions;
     let boxFaceLocationArr = [];
@@ -156,9 +166,7 @@ class App extends Component {
             </div>
 
             <div className="formDisplay">
-              {this.state.userInfo.id ? (
-                <Rank newUser={this.state.userInfo} />
-              ) : null}
+              <Rank newUser={this.state.userInfo} />
 
               <ImageLinkForm
                 onInputChange={this.onInputChange}
