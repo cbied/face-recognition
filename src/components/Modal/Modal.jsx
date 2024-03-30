@@ -1,7 +1,12 @@
 import { useState } from "react";
 import { Form, Modal, Button } from "rsuite";
 
-const ProfileModal = ({ modalOpen, handleClose, user }) => {
+const ProfileModal = ({
+  modalOpen,
+  handleClose,
+  user,
+  handleCloseWithUpdate,
+}) => {
   const [formValue, setFormValue] = useState({});
   const herokuLink = "https://limitless-beach-11215-0d644074e9f3.herokuapp.com";
   const localhost = "http://localhost:3001";
@@ -9,14 +14,14 @@ const ProfileModal = ({ modalOpen, handleClose, user }) => {
   const handleChangeProfile = async () => {
     // Update user profile
     if (user.name !== formValue.name) {
-      await fetch(`${herokuLink}/profile/${user.id}`, {
+      await fetch(`${localhost}/profile/${user.id}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formValue),
       })
         .then((res) => res.json())
         .then(() => {
-          handleClose();
+          handleCloseWithUpdate(user.id);
         });
     }
   };

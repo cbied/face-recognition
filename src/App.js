@@ -40,7 +40,15 @@ class App extends Component {
   localhost = "http://localhost:3001";
   handleClose = async () => {
     this.setState({ modalOpen: false });
-    await fetch(`${this.herokuLink}/profile/${this.state.userInfo.id}`, {
+  };
+
+  handleCloseWithUpdate = (userId) => {
+    this.setState({ modalOpen: false });
+    this.getUserInfo(userId);
+  };
+
+  getUserInfo = async (userId) => {
+    await fetch(`${this.herokuLink}/profile/${userId}`, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     })
@@ -122,16 +130,10 @@ class App extends Component {
     this.setState({ route: route });
   };
 
-  loadUser = (user) => {
-    this.setState({
-      userInfo: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        entries: user.entries,
-        joined: user.joined,
-      },
-    });
+  loadUser = (userId) => {
+    if (userId) {
+      this.getUserInfo(userId);
+    }
   };
 
   onCopyText(event) {
@@ -161,6 +163,7 @@ class App extends Component {
               <ProfileModal
                 modalOpen={this.state.modalOpen}
                 handleClose={this.handleClose}
+                handleCloseWithUpdate={this.handleCloseWithUpdate}
                 user={this.state.userInfo}
               />
             </div>

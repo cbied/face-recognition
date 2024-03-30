@@ -31,10 +31,10 @@ class SignIn extends React.Component {
       }),
     })
       .then((res) => res.json())
-      .then((user) => {
+      .then((data) => {
         // if a user ID is found, load user state and route to dashboard
-        if (user.id) {
-          this.props.loadUser(user);
+        if (data.userId) {
+          this.props.loadUser(data.userId);
           this.props.onRouteChange("dashboard");
         } else {
           alert("Incorrect username or password");
